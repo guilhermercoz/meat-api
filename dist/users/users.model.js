@@ -42,7 +42,11 @@ userSchema.pre('save', function (next) {
         next();
     }
     else {
-        bcrypt.hash(user.password, environment_1.environment.security.saltRounds);
+        bcrypt.hash(user.password, environment_1.environment.security.saltRounds)
+            .then(hash => {
+            user.password = hash;
+            next();
+        }).catch(next);
     }
 });
 exports.User = mongoose.model('User', userSchema);

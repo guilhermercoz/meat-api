@@ -49,6 +49,10 @@ userSchema.pre('save', function(next){
     next()
   }else{
     bcrypt.hash(user.password, environment.security.saltRounds)
+      .then(hash=>{
+        user.password = hash
+        next()
+      }).catch(next)
   }
 })
 
